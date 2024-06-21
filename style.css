@@ -1,0 +1,61 @@
+html {
+  font-size: 62.5%;
+}
+
+.title {
+  font-size: 2rem;
+  text-align: center;
+  margin-top: 20rem;
+}
+
+.main {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 10rem;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.btn {
+  padding: 2rem 7rem;
+  font-size: 2rem;
+  font-weight: 800;
+  border-radius: 2rem;
+  border: 0;
+  background-color: rgb(72, 243, 72);
+  transition: all 0.3s;
+}
+
+.btn:focus {
+  background-color: rgb(44, 200, 44);
+  transform: scale(1.1);
+}
+
+.btn:hover {
+  cursor: pointer;
+  background-color: rgb(44, 200, 44);
+  transform: scale(1.1);
+  transition: all 0.3s;
+}
+
+.score__container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-size: 1.6rem;
+}
+
+.square__container {
+  width: 40rem;
+  height: 35rem;
+  background-color: black;
+}
+
+.score {
+  margin: 0;
+}
