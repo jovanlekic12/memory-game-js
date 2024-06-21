@@ -51,11 +51,17 @@ html {
 }
 
 .square__container {
-  width: 40rem;
-  height: 35rem;
-  background-color: black;
+  width: 60rem;
+  height: 45rem;
+  gap: 2rem;
+  display: grid;
 }
 
 .score {
   margin: 0;
+}
+
+.square {
+  background-color: black;
+  border-radius: 2rem;
 }
