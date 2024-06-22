@@ -5,41 +5,77 @@ const btnMedium = document.querySelector(".btn__medium");
 const btnHard = document.querySelector(".btn__hard");
 const gridContainer = document.querySelector(".square__container");
 const score = document.querySelector(".score");
-let clickedSquares = 0;
 class SquareManager {
+  numberOfSquares;
   squares;
+  clickedSquares;
   constructor() {
     this.squares = [];
+    this.numberOfSquares = 9;
+    this.clickedSquares = 0;
   }
   addSquare(square) {
     this.squares.push(square);
   }
+
+  setDifficulty(numberOfSquares) {
+    this.numberOfSquares = numberOfSquares * numberOfSquares;
+  }
+
+  fillArray() {
+    this.deleteSquares();
+    for (let i = 0; i < this.numberOfSquares; i++) {
+      const sqaure = new Square(getRandomColor());
+      this.addSquare(sqaure);
+    }
+  }
+
   renderSquares(rows, cols) {
     gridContainer.innerHTML = "";
-    squareManager.squares = [];
-    for (let c = 0; c < rows * cols; c++) {
-      squareManager.addSquare(new Square());
+    //   for (let c = 0; c < rows * cols; c++) {
+    //     squareManager.addSquare(new Square());
+    //     let cell = document.createElement("div");
+    //     cell.classList.add("square");
+    //     gridContainer.appendChild(cell);
+    //     cell.setAttribute("id", this.squares[c].id);
+    //   }
+    //   gridContainer.style.gridTemplateColumns = `repeat(${cols},1fr`;
+    //   gridContainer.style.gridTemplateRows = `repeat(${rows},1fr)`;
+    this.squares.forEach((square) => {
       let cell = document.createElement("div");
       cell.classList.add("square");
+      cell.style.backgroundColor = square.color;
       gridContainer.appendChild(cell);
-      cell.setAttribute("id", this.squares[c].id);
-    }
+      cell.setAttribute("id", square.id);
+    });
     gridContainer.style.gridTemplateColumns = `repeat(${cols},1fr`;
     gridContainer.style.gridTemplateRows = `repeat(${rows},1fr)`;
   }
+  deleteSquares() {
+    squareManager.squares = [];
+  }
   shuffleArray() {
-    for (let i = this.squares.length - 1; i > 0; i--) {
+    let shuffledArray = this.squares;
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [this.squares[i], this.squares[j]] = [this.squares[j], this.squares[i]];
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ];
     }
-    return this.squares;
+    return shuffledArray;
+  }
+  setSquares(squares) {
+    this.squares = squares;
   }
 }
 
 class Square {
   id;
   isClicked;
-  constructor() {
+  color;
+  constructor(color) {
+    this.color = color;
     this.id = self.crypto.randomUUID();
     this.isClicked = false;
   }
@@ -49,7 +85,9 @@ class Square {
 }
 
 const squareManager = new SquareManager();
-console.log(squareManager);
+squareManager.fillArray();
+squareManager.renderSquares(3, 3);
+
 function getRandomColor() {
   let letters = "0123456789ABCDEF";
   let randomColor = "#";
@@ -60,7 +98,7 @@ function getRandomColor() {
 }
 
 squareManager.renderSquares(3, 3);
-score.textContent = `${clickedSquares}/${squareManager.squares.length}`;
+score.textContent = `${squareManager.clickedSquares}/${squareManager.squares.length}`;
 const squares = gridContainer.querySelectorAll(".square");
 squares.forEach((square) => (square.style.backgroundColor = getRandomColor()));
 
@@ -71,52 +109,54 @@ gridContainer.addEventListener("click", function (event) {
     const currentSquare = squareManager.squares.find(
       (square) => id === square.id
     );
-    clickedSquares = clickedSquares + 1;
-    score.textContent = `${clickedSquares}/${squareManager.squares.length}`;
-    if (clickedSquares === squareManager.squares.length) {
-      clickedSquares = 0;
-      score.textContent = `${clickedSquares}/${squareManager.squares.length}`;
+    squareManager.clickedSquares = squareManager.clickedSquares + 1;
+    score.textContent = `${squareManager.clickedSquares}/${squareManager.squares.length}`;
+    if (squareManager.clickedSquares === squareManager.squares.length) {
+      squareManager.clickedSquares = 0;
+      score.textContent = `${squareManager.clickedSquares}/${squareManager.squares.length}`;
       squareManager.squares.forEach((square) => (square.isClicked = false));
+      console.log(squareManager.squares);
       alert("you won");
+      return;
     }
-    squareManager.shuffleArray();
+    squareManager.setSquares(squareManager.shuffleArray());
+    squareManager.renderSquares(
+      Math.sqrt(squareManager.numberOfSquares),
+      Math.sqrt(squareManager.numberOfSquares)
+    );
     if (currentSquare.isClicked) {
-      clickedSquares = 0;
-      score.textContent = `${clickedSquares}/${squareManager.squares.length}`;
+      squareManager.clickedSquares = 0;
+      score.textContent = `${squareManager.clickedSquares}/${squareManager.squares.length}`;
+      currentSquare.isClicked = false;
       squareManager.squares.forEach((square) => (square.isClicked = false));
+      console.log(squareManager.squares);
       alert("end");
+      return;
     }
     currentSquare.changeIsClicked();
   }
 });
 
 btnEasy.addEventListener("click", function () {
+  squareManager.setDifficulty(3);
+  squareManager.fillArray();
   squareManager.renderSquares(3, 3);
-  const squares = gridContainer.querySelectorAll(".square");
-  squares.forEach(
-    (square) => (square.style.backgroundColor = getRandomColor())
-  );
-  clickedSquares = 0;
-  score.textContent = `${clickedSquares}/${squareManager.squares.length}`;
+  squareManager.clickedSquares = 0;
+  score.textContent = `${squareManager.clickedSquares}/${squareManager.squares.length}`;
 });
 
 btnMedium.addEventListener("click", function () {
+  squareManager.setDifficulty(4);
+  squareManager.fillArray();
   squareManager.renderSquares(4, 4);
-  const squares = gridContainer.querySelectorAll(".square");
-  squares.forEach(
-    (square) => (square.style.backgroundColor = getRandomColor())
-  );
-  clickedSquares = 0;
-  score.textContent = `${clickedSquares}/${squareManager.squares.length}`;
+  squareManager.clickedSquares = 0;
+  score.textContent = `${squareManager.clickedSquares}/${squareManager.squares.length}`;
 });
 
 btnHard.addEventListener("click", function () {
+  squareManager.setDifficulty(5);
+  squareManager.fillArray();
   squareManager.renderSquares(5, 5);
-  const squares = gridContainer.querySelectorAll(".square");
-  squares.forEach(
-    (square) => (square.style.backgroundColor = getRandomColor())
-  );
-  clickedSquares = 0;
-
-  score.textContent = `${clickedSquares}/${squareManager.squares.length}`;
+  squareManager.clickedSquares = 0;
+  score.textContent = `${squareManager.clickedSquares}/${squareManager.squares.length}`;
 });
