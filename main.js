@@ -27,6 +27,13 @@ class SquareManager {
     gridContainer.style.gridTemplateColumns = `repeat(${cols},1fr`;
     gridContainer.style.gridTemplateRows = `repeat(${rows},1fr)`;
   }
+  shuffleArray() {
+    for (let i = this.squares.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this.squares[i], this.squares[j]] = [this.squares[j], this.squares[i]];
+    }
+    return this.squares;
+  }
 }
 
 class Square {
@@ -66,9 +73,18 @@ gridContainer.addEventListener("click", function (event) {
     );
     clickedSquares = clickedSquares + 1;
     score.textContent = `${clickedSquares}/${squareManager.squares.length}`;
-
+    if (clickedSquares === squareManager.squares.length) {
+      clickedSquares = 0;
+      score.textContent = `${clickedSquares}/${squareManager.squares.length}`;
+      squareManager.squares.forEach((square) => (square.isClicked = false));
+      alert("you won");
+    }
+    squareManager.shuffleArray();
     if (currentSquare.isClicked) {
-      alert("KURAC");
+      clickedSquares = 0;
+      score.textContent = `${clickedSquares}/${squareManager.squares.length}`;
+      squareManager.squares.forEach((square) => (square.isClicked = false));
+      alert("end");
     }
     currentSquare.changeIsClicked();
   }
@@ -80,6 +96,7 @@ btnEasy.addEventListener("click", function () {
   squares.forEach(
     (square) => (square.style.backgroundColor = getRandomColor())
   );
+  clickedSquares = 0;
   score.textContent = `${clickedSquares}/${squareManager.squares.length}`;
 });
 
@@ -89,6 +106,7 @@ btnMedium.addEventListener("click", function () {
   squares.forEach(
     (square) => (square.style.backgroundColor = getRandomColor())
   );
+  clickedSquares = 0;
   score.textContent = `${clickedSquares}/${squareManager.squares.length}`;
 });
 
@@ -98,5 +116,7 @@ btnHard.addEventListener("click", function () {
   squares.forEach(
     (square) => (square.style.backgroundColor = getRandomColor())
   );
+  clickedSquares = 0;
+
   score.textContent = `${clickedSquares}/${squareManager.squares.length}`;
 });
