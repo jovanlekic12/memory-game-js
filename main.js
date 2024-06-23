@@ -6,20 +6,20 @@ const btnHard = document.querySelector(".btn__hard");
 const gridContainer = document.querySelector(".square__container");
 const score = document.querySelector(".score");
 class SquareManager {
-  numberOfSquares;
   squares;
+  numberOfSquares;
   clickedSquares;
   constructor() {
     this.squares = [];
-    this.numberOfSquares = 9;
     this.clickedSquares = 0;
+    this.numberOfSquares = 9;
   }
   addSquare(square) {
     this.squares.push(square);
   }
 
-  setDifficulty(numberOfSquares) {
-    this.numberOfSquares = numberOfSquares * numberOfSquares;
+  setDifficulty(difficulty) {
+    this.numberOfSquares = difficulty * difficulty;
   }
 
   fillArray() {
@@ -32,15 +32,7 @@ class SquareManager {
 
   renderSquares(rows, cols) {
     gridContainer.innerHTML = "";
-    //   for (let c = 0; c < rows * cols; c++) {
-    //     squareManager.addSquare(new Square());
-    //     let cell = document.createElement("div");
-    //     cell.classList.add("square");
-    //     gridContainer.appendChild(cell);
-    //     cell.setAttribute("id", this.squares[c].id);
-    //   }
-    //   gridContainer.style.gridTemplateColumns = `repeat(${cols},1fr`;
-    //   gridContainer.style.gridTemplateRows = `repeat(${rows},1fr)`;
+
     this.squares.forEach((square) => {
       let cell = document.createElement("div");
       cell.classList.add("square");
@@ -115,7 +107,6 @@ gridContainer.addEventListener("click", function (event) {
       squareManager.clickedSquares = 0;
       score.textContent = `${squareManager.clickedSquares}/${squareManager.squares.length}`;
       squareManager.squares.forEach((square) => (square.isClicked = false));
-      console.log(squareManager.squares);
       alert("you won");
       return;
     }
@@ -129,7 +120,6 @@ gridContainer.addEventListener("click", function (event) {
       score.textContent = `${squareManager.clickedSquares}/${squareManager.squares.length}`;
       currentSquare.isClicked = false;
       squareManager.squares.forEach((square) => (square.isClicked = false));
-      console.log(squareManager.squares);
       alert("end");
       return;
     }
@@ -137,26 +127,29 @@ gridContainer.addEventListener("click", function (event) {
   }
 });
 
-btnEasy.addEventListener("click", function () {
-  squareManager.setDifficulty(3);
+btnEasy.addEventListener("click", function (event) {
+  const difficulty = event.target.getAttribute("data-difficulty");
+  squareManager.setDifficulty(difficulty);
   squareManager.fillArray();
-  squareManager.renderSquares(3, 3);
+  squareManager.renderSquares(difficulty, difficulty);
   squareManager.clickedSquares = 0;
   score.textContent = `${squareManager.clickedSquares}/${squareManager.squares.length}`;
 });
 
-btnMedium.addEventListener("click", function () {
-  squareManager.setDifficulty(4);
+btnMedium.addEventListener("click", function (event) {
+  const difficulty = event.target.getAttribute("data-difficulty");
+  squareManager.setDifficulty(difficulty);
   squareManager.fillArray();
-  squareManager.renderSquares(4, 4);
+  squareManager.renderSquares(difficulty, difficulty);
   squareManager.clickedSquares = 0;
   score.textContent = `${squareManager.clickedSquares}/${squareManager.squares.length}`;
 });
 
-btnHard.addEventListener("click", function () {
-  squareManager.setDifficulty(5);
+btnHard.addEventListener("click", function (event) {
+  const difficulty = event.target.getAttribute("data-difficulty");
+  squareManager.setDifficulty(difficulty);
   squareManager.fillArray();
-  squareManager.renderSquares(5, 5);
+  squareManager.renderSquares(difficulty, difficulty);
   squareManager.clickedSquares = 0;
   score.textContent = `${squareManager.clickedSquares}/${squareManager.squares.length}`;
 });
