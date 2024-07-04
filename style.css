@@ -12,6 +12,7 @@ html {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  flex-wrap: wrap;
   margin-top: 10rem;
 }
 
@@ -79,4 +80,28 @@ footer {
   padding: 2rem 0;
   background-color: rgb(44, 200, 44);
   margin-top: 2rem;
+}
+
+@media screen and (max-width: 900px) {
+  .title {
+    margin-top: 1rem;
+  }
+
+  .main {
+    margin-top: 1rem;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+  .btn {
+    padding: 2rem 2rem;
+  }
+  .score__container {
+    flex-direction: row;
+    align-items: center;
+  }
 }
